@@ -1,0 +1,33 @@
+esphome:
+  name: oneshot-c6-proto
+
+esp32:
+  board: esp32-c6-devkitc-1
+  variant: ESP32C6
+  framework:
+    type: esp-idf
+    version: 5.3.0
+    sdkconfig_options:
+      CONFIG_ESPTOOLPY_FLASHSIZE_4MB: y
+    platform_version: 6.8.1
+
+external_components:
+  source: .
+
+sensor:
+  - platform: ntc
+    sensor: resistance_sensor_4
+    calibration:
+      b_constant: 3950
+      reference_temperature: 25°C
+      reference_resistance: 5kOhm
+    name: Temp 4
+  - platform: resistance
+    id: resistance_sensor_4
+    sensor: s4
+    configuration: DOWNSTREAM
+    resistor: 4.7kOhm
+  - id: s4
+    platform: adc_oneshot
+    pin: GPIO4
+    update_interval: 15s
